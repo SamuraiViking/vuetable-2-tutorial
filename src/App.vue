@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <img src="./assets/logo.png">
-    <div class="ui container">
       <my-vuetable></my-vuetable>
     </div>
   </div>
@@ -15,7 +14,7 @@ export default {
   components: {
     MyVuetable
   }
-}
+};
 </script>
 
 <style>
