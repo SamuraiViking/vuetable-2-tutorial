@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import MyVuetable from './components/MyVuetable'
+import MyVuetable from './components/MyVuetable';
 
 export default {
   name: 'app',
