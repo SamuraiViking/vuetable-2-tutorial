@@ -10,12 +10,33 @@
     </div>
 
     <vuetable ref="vuetable"
+      :multi-sort="true"
+      :sortOrder="sortOrder"
       api-url="https://vuetable.ratiw.net/api/users"
       :fields="fields"
       pagination-path=""
       :per-page="20"
       @vuetable:pagination-data="onPaginationData"
-    ></vuetable>
+    >
+    <template slot="actions" scope="props">
+      <div class="custom-actions">
+        <button class="ui basic button"
+          @click="onAction('view-item', props.rowData, props.rowIndex)">
+          <i class="zoom icon"></i>
+        </button>
+        <button class="ui basic button"
+          @click="onAction('edit-item', props.rowData, props.rowIndex)">
+          <i class="edit icon"></i>
+        </button>
+        <button class="ui basic button"
+          @click="onAction('delete-item', props.rowData, props.rowIndex)">
+          <i class="delete icon"></i>
+        </button>
+      </div>
+    </template>
+
+
+    </vuetable>
 
     <div class="vuetable-pagination ui basic segment grid">
       <vuetable-pagination-info ref="paginationInfo">
@@ -33,6 +54,10 @@ import accounting from 'accounting';
 import moment from 'moment';
 import VuetablePagination from 'vuetable-2/src/components/VuetablePagination';
 import VuetablePaginationInfo from 'vuetable-2/src/components/VueTablePaginationInfo';
+import Vue from 'vue';
+import CustomActions from './CustomActions';
+
+Vue.component('custom-actions', CustomActions);
 // import VuetablePagination from 'vuetable-2/src/components/VuetablePaginationDropdown'
 
 
@@ -44,32 +69,74 @@ export default {
   },
   data() {
     return {
-      fields: [
-        'name','email',
+      sortOrder: [
         {
-          name: 'birthdate',
+          field: 'email',
+          sortField: 'email',
+          direction: 'desc',
+        }
+      ],
+      fields: [
+        {
+          name: '__handle',
+          dataClass: 'center aligned'
+        },
+        {
+          name: '__checkbox',
           titleClass: 'center aligned',
           dataClass: 'center aligned',
-          callback: 'formatDate|DD-MM-YYY',
+        },
+        {
+          name: 'name',
+          sortField: 'name'
+        },
+        {
+          name: 'email',
+          sortField: 'email'
+        },
+        {
+          name: 'age',
+          sortField: 'birthdate',
+          dataClass: 'center aligned',
+        },
+        {
+          name: 'birthdate',
+          sortField: 'birthdate',
+          titleClass: 'center aligned',
+          dataClass: 'center aligned',
+          callback: 'formatDate|DD-MM-YYYY'
         },
         {
           name: 'nickname',
-          callback: 'allcap',
-          titleClass: 'center aligned',
-          dataClass: 'left aligned'
+          sortField: 'nickname',
+          callback: 'allcap'
         },
         {
           name: 'gender',
+          sortField: 'gender',
           titleClass: 'center aligned',
           dataClass: 'center aligned',
           callback: 'genderLabel'
         },
         {
           name: 'salary',
+          sortField: 'salary',
           titleClass: 'center aligned',
           dataClass: 'right aligned',
           callback: 'formatNumber'
-        }
+        },
+        {
+          name: '__component:custom-actions',
+          title: 'Actions',
+          titleClass: 'center aligned',
+          dataClass: 'center aligned'
+        },
+        {
+          name: '__slot:actions',
+          title: 'Actions',
+          titleClass: 'center aligned',
+          dataClass: 'center aligned',
+        },
       ]
     };
   },
@@ -99,6 +166,9 @@ export default {
     },
     onChangePage(page) {
       this.$refs.vuetable.changePage(page);
+    },
+    onAction(action, data, index) {
+      console.log('slot) action: ' + action, data.name, index);
     }
   }
 };

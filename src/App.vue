@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
+    <img style="width:200px" src="http://athletics.stolaf.edu/custompages/logos/athletics/stolaf-on-white.jpg">
       <my-vuetable></my-vuetable>
     </div>
   </div>
