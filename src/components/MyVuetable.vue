@@ -17,6 +17,8 @@
       pagination-path=""
       :per-page="20"
       @vuetable:pagination-data="onPaginationData"
+      detail-row-component="my-detail-row"
+      @vuetable:cell-clicked="onCellClicked"
     >
     <template slot="actions" scope="props">
       <div class="custom-actions">
@@ -56,7 +58,9 @@ import VuetablePagination from 'vuetable-2/src/components/VuetablePagination';
 import VuetablePaginationInfo from 'vuetable-2/src/components/VueTablePaginationInfo';
 import Vue from 'vue';
 import CustomActions from './CustomActions';
+import DetailRow from './DetailRow';
 
+Vue.component('my-detail-row', DetailRow);
 Vue.component('custom-actions', CustomActions);
 // import VuetablePagination from 'vuetable-2/src/components/VuetablePaginationDropdown'
 
@@ -97,13 +101,13 @@ export default {
         {
           name: 'age',
           sortField: 'birthdate',
-          dataClass: 'center aligned',
+          // dataClass: 'center aligned',
         },
         {
           name: 'birthdate',
           sortField: 'birthdate',
           titleClass: 'center aligned',
-          dataClass: 'center aligned',
+          // dataClass: 'center aligned',
           callback: 'formatDate|DD-MM-YYYY'
         },
         {
@@ -115,14 +119,14 @@ export default {
           name: 'gender',
           sortField: 'gender',
           titleClass: 'center aligned',
-          dataClass: 'center aligned',
+          // dataClass: 'center aligned',
           callback: 'genderLabel'
         },
         {
           name: 'salary',
           sortField: 'salary',
           titleClass: 'center aligned',
-          dataClass: 'right aligned',
+          // dataClass: 'right aligned',
           callback: 'formatNumber'
         },
         {
@@ -131,12 +135,12 @@ export default {
           titleClass: 'center aligned',
           dataClass: 'center aligned'
         },
-        {
-          name: '__slot:actions',
-          title: 'Actions',
-          titleClass: 'center aligned',
-          dataClass: 'center aligned',
-        },
+        // {
+        //   name: '__slot:actions',
+        //   title: 'Actions',
+        //   titleClass: 'center aligned',
+        //   dataClass: 'center aligned',
+        // },
       ]
     };
   },
@@ -169,6 +173,10 @@ export default {
     },
     onAction(action, data, index) {
       console.log('slot) action: ' + action, data.name, index);
+    },
+    onCellClicked(data, field, event) {
+      console.log('cellClicked: ', field.name);
+      this.$refs.vuetable.toggleDetailRow(data.id);
     }
   }
 };
